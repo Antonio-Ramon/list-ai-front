@@ -1,0 +1,40 @@
+<section class="upload-form">
+  <label class="upload-label" for="file-input">INPUT — NOTA FISCAL</label>
+
+  <label
+    class="upload-zone"
+    for="file-input"
+    [class.upload-zone--loading]="isLoading()"
+  >
+    <span class="upload-zone__primary">SELECIONAR ARQUIVO</span>
+    <span class="upload-zone__secondary">JPG · PNG · WEBP — máx 10 MB</span>
+    <input
+      type="file"
+      id="file-input"
+      accept="image/jpeg,image/png,image/webp"
+      (change)="onFileChange($event)"
+      class="upload-zone__input"
+    />
+  </label>
+
+  @if (selectedFile()) {
+    <div class="file-row">
+      <span class="file-row__dot"></span>
+      <span class="file-row__name">{{ selectedFile()!.name }}</span>
+      <span class="file-row__size">{{ formatFileSize(selectedFile()!.size) }}</span>
+    </div>
+  }
+
+  @if (fileSizeError()) {
+    <p class="upload-error" role="alert">{{ fileSizeError() }}</p>
+  }
+
+  <button
+    class="btn-submit"
+    type="button"
+    [disabled]="!selectedFile() || isLoading()"
+    (click)="onSubmit()"
+  >
+    EXTRAIR LISTA
+  </button>
+</section>
