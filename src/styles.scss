@@ -1,0 +1,84 @@
+@use '@angular/material' as mat;
+
+// ─── Angular Material v3 — Dark Theme ────────────────────────────────────────
+html {
+  height: 100%;
+  @include mat.theme((
+    color: (
+      theme-type: dark,
+      primary: mat.$violet-palette,
+      tertiary: mat.$cyan-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+// ─── Design Tokens --la-* ────────────────────────────────────────────────────
+:root {
+  // Colors
+  --la-color-bg:             #1A1A2E;
+  --la-color-surface:        #16213E;
+  --la-color-surface-card:   #0F3460;
+  --la-color-primary:        #7C4DFF;
+  --la-color-primary-hover:  #651FFF;
+  --la-color-primary-fg:     #FFFFFF;
+  --la-color-accent:         #00E5FF;
+  --la-color-accent-fg:      #1A1A2E;
+  --la-color-accent-glow:    rgba(0, 229, 255, 0.15);
+  --la-color-accent-border:  rgba(0, 229, 255, 0.40);
+  --la-color-border-subtle:  rgba(124, 77, 255, 0.20);
+  --la-color-border-primary: rgba(124, 77, 255, 0.40);
+  --la-color-text-high:      #E0E0E0;
+  --la-color-text-med:       #90A4AE;
+  --la-color-text-low:       #546E7A;
+  --la-color-error:          #FF5252;
+  --la-color-error-fg:       #FFFFFF;
+  --la-gradient-accent:      linear-gradient(90deg, #7C4DFF 0%, #00E5FF 100%);
+
+  // Typography
+  --la-font-mono: "Courier New", Courier, monospace;
+
+  // Spacing
+  --la-space-xs:  4px;
+  --la-space-sm:  8px;
+  --la-space-md:  16px;
+  --la-space-lg:  24px;
+  --la-space-xl:  32px;
+  --la-space-xxl: 48px;
+
+  // Border radius (uniform 4px — ferramenta técnica)
+  --la-radius-sm:   4px;
+  --la-radius-md:   4px;
+  --la-radius-lg:   4px;
+  --la-radius-pill: 100px;
+}
+
+// ─── Base ─────────────────────────────────────────────────────────────────────
+body {
+  margin: 0;
+  height: 100%;
+  color-scheme: dark;
+  background-color: var(--la-color-bg);
+  color: var(--la-color-text-high);
+  font-family: Roboto, sans-serif;
+}
+
+// ─── Layout responsivo ────────────────────────────────────────────────────────
+.app-container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--la-space-xxl) var(--la-space-lg); // 48px 24px — mobile ≤480px
+
+  @media (min-width: 481px) {
+    padding: var(--la-space-xxl) var(--la-space-xxl); // 48px 48px — tablet/desktop
+  }
+}
+
+// ─── prefers-reduced-motion ───────────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
