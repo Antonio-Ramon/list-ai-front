@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ExtractionItem } from '../../types/extraction.types';
 
@@ -15,6 +15,8 @@ export class ResultCardComponent {
   readonly hasResult = input.required<boolean>();
   readonly items = input.required<ExtractionItem[]>();
   readonly text = input.required<string>();
+
+  readonly back = output<void>();
 
   readonly copied = signal<boolean>(false);
 

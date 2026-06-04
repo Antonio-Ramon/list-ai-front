@@ -17,12 +17,13 @@
       </div>
     </div>
 
-    <button
-      class="btn-copy"
-      type="button"
-      (click)="copyToClipboard()"
-    >
-      {{ copied() ? 'COPIADO!' : 'COPIAR LISTA' }}
-    </button>
+    <div class="result-actions">
+      <button class="btn-back" type="button" (click)="back.emit()">
+        VOLTAR
+      </button>
+      <button class="btn-copy" type="button" (click)="copyToClipboard()">
+        {{ copied() ? 'COPIADO!' : 'COPIAR' }}
+      </button>
+    </div>
   </div>
 }

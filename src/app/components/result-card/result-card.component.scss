@@ -45,7 +45,6 @@
     border: 1px solid rgba(0, 229, 255, 0.25);
     border-radius: var(--la-radius-sm);
     padding: 2px 8px;
-    font-family: var(--la-font-mono);
     font-size: 11px;
     color: var(--la-color-accent);
   }
@@ -69,7 +68,6 @@
   }
 
   &__index {
-    font-family: var(--la-font-mono);
     font-size: 11px;
     color: var(--la-color-text-low);
     flex-shrink: 0;
@@ -77,7 +75,6 @@
   }
 
   &__name {
-    font-family: var(--la-font-mono);
     font-size: 12px;
     color: var(--la-color-text-high);
     flex: 1;
@@ -91,18 +88,46 @@
     border: 1px solid rgba(0, 229, 255, 0.25);
     border-radius: var(--la-radius-pill); /* 100px — exceção: pill para qty badges */
     padding: 2px 8px;
-    font-family: var(--la-font-mono);
     font-size: 11px;
     color: var(--la-color-accent);
     flex-shrink: 0;
   }
 }
 
-.btn-copy {
+.result-actions {
+  display: flex;
+  gap: var(--la-space-sm);
+}
+
+.btn-back {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  min-height: 44px;
+  padding: 14px 16px;
+  background: transparent;
+  color: var(--la-color-text-med);
+  border: 1px solid var(--la-color-border-subtle);
+  border-radius: var(--la-radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: var(--la-color-text-high);
+    border-color: var(--la-color-border-primary);
+  }
+}
+
+.btn-copy {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 44px;
   padding: 14px 24px;
   background: transparent;
