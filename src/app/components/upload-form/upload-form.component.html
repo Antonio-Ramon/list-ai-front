@@ -1,33 +1,66 @@
 <section class="upload-form">
-  <label class="upload-label" for="file-input">Envie uma nota fiscal</label>
+  <span class="upload-label">Selecione a Nota Fiscal</span>
 
-  <label
-    class="upload-zone"
-    for="file-input"
-    [class.upload-zone--loading]="isLoading()"
-  >
-    <span class="upload-zone__primary">SELECIONAR ARQUIVO</span>
-    <span class="upload-zone__secondary">JPG · PNG · WEBP — máx 10 MB</span>
-    <input
-      type="file"
-      id="file-input"
-      accept="image/jpeg,image/png,image/webp"
-      (change)="onFileChange($event)"
-      class="upload-zone__input"
-    />
-  </label>
-
-  @if (selectedFile()) {
-    <div class="file-row">
-      <span class="file-row__dot"></span>
-      <span class="file-row__name">{{ selectedFile()!.name }}</span>
-      <span class="file-row__size">{{ formatFileSize(selectedFile()!.size) }}</span>
+  @if (selectedFile() && previewUrl()) {
+    <div class="file-preview" [class.file-preview--loading]="isLoading()">
+      <div class="file-preview__image-wrap">
+        <img
+          class="file-preview__image"
+          [src]="previewUrl()!"
+          [alt]="selectedFile()!.name"
+        />
+      </div>
+      <div class="file-preview__footer">
+        <span class="file-preview__dot"></span>
+        <span class="file-preview__name">{{ selectedFile()!.name }}</span>
+        <span class="file-preview__size">{{ formatFileSize(selectedFile()!.size) }}</span>
+        <button
+          type="button"
+          class="file-preview__remove"
+          [disabled]="isLoading()"
+          (click)="onRemoveFile()"
+          aria-label="Remover arquivo"
+        ><mat-icon>close</mat-icon></button>
+      </div>
     </div>
+  } @else {
+    <label
+      class="upload-zone"
+      for="file-input"
+    >
+      <mat-icon class="upload-zone__icon">upload_file</mat-icon>
+      <span class="upload-zone__primary">SELECIONAR ARQUIVO</span>
+      <span class="upload-zone__secondary">JPG · PNG · WEBP — máx 10 MB</span>
+      <input
+        type="file"
+        id="file-input"
+        accept="image/jpeg,image/png,image/webp"
+        (change)="onFileChange($event)"
+        class="upload-zone__input"
+      />
+    </label>
   }
 
   @if (fileSizeError()) {
     <p class="upload-error" role="alert">{{ fileSizeError() }}</p>
   }
+
+  <span class="upload-label">Formato da lista</span>
+
+  <div class="format-toggle" role="group" aria-label="Formato da lista">
+    <button
+      type="button"
+      class="format-toggle__btn"
+      [class.format-toggle__btn--active]="format() === 'checklist'"
+      (click)="format.set('checklist')"
+    ><mat-icon>checklist</mat-icon> Checklist</button>
+    <button
+      type="button"
+      class="format-toggle__btn"
+      [class.format-toggle__btn--active]="format() === 'asterisk'"
+      (click)="format.set('asterisk')"
+    ><mat-icon>format_list_bulleted</mat-icon> Asterisco</button>
+  </div>
 
   <button
     class="btn-submit"
@@ -35,6 +68,6 @@
     [disabled]="!selectedFile() || isLoading()"
     (click)="onSubmit()"
   >
-    EXTRAIR LISTA
+    <mat-icon>auto_awesome</mat-icon> EXTRAIR LISTA
   </button>
 </section>
