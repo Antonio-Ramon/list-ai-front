@@ -7,24 +7,34 @@
     <p class="app-subtitle">Escaneie sua nota fiscal e obtenha a lista de compras extraída por inteligência artificial.</p>
   </header>
 
-  <la-upload-form
-    [isLoading]="isLoading()"
-    (fileSelected)="onFileSelected($event)"
-    (submitted)="onSubmit()"
-  />
+  @if (hasResult()) {
+    <la-result-card
+      [hasResult]="hasResult()"
+      [items]="items()"
+      [text]="resultText()"
+      (back)="onBack()"
+    />
+  } @else {
+    <la-upload-form
+      [isLoading]="isLoading()"
+      (fileSelected)="onFileSelected($event)"
+      (fileRemoved)="onFileRemoved()"
+      (submitted)="onSubmit($event)"
+    />
 
-  <la-error-message [message]="errorMessage()" />
+    <la-error-message [message]="errorMessage()" />
 
-  @if (isLoading()) {
-    <div class="spinner-container" role="status" aria-label="Processando nota fiscal">
-      <mat-progress-spinner mode="indeterminate" color="primary" />
-      <p class="loading-label">Processando nota fiscal...</p>
-    </div>
+    @if (isLoading()) {
+      <div class="loading-bop" role="status" aria-label="Processando nota fiscal">
+        <div class="loading-bop__bars" aria-hidden="true">
+          <span class="loading-bop__bar"></span>
+          <span class="loading-bop__bar"></span>
+          <span class="loading-bop__bar"></span>
+          <span class="loading-bop__bar"></span>
+          <span class="loading-bop__bar"></span>
+        </div>
+        <p class="loading-bop__message">{{ loadingMessage() }}</p>
+      </div>
+    }
   }
-
-  <la-result-card
-    [hasResult]="hasResult()"
-    [items]="items()"
-    [text]="resultText()"
-  />
 </div>
