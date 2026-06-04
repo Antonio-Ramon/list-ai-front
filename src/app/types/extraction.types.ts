@@ -1,4 +1,4 @@
-export type ExtractionFormat = 'asterisk' | 'checklist';
+export type ExtractionFormat = 'asterisk' | 'checklist' | 'simple' | 'excel';
 
 export interface ExtractionItem {
   name: string;
