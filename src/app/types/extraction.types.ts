@@ -1,3 +1,5 @@
+export type ExtractionFormat = 'asterisk' | 'checklist';
+
 export interface ExtractionItem {
   name: string;
   quantity: number;

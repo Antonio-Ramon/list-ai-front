@@ -3,19 +3,19 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of, TimeoutError } from 'rxjs';
 import { catchError, timeout } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { ExtractionError, ExtractionResult } from '../types/extraction.types';
+import { ExtractionError, ExtractionFormat, ExtractionResult } from '../types/extraction.types';
 import { mapApiError } from '../utils/error-mapper';
 
 @Injectable({ providedIn: 'root' })
 export class ExtractionService {
   private readonly http = inject(HttpClient);
 
-  extract(file: File): Observable<ExtractionResult | ExtractionError> {
+  extract(file: File, format: ExtractionFormat = 'checklist'): Observable<ExtractionResult | ExtractionError> {
     const form = new FormData();
     form.append('image', file);
     return this.http
       .post<ExtractionResult>(
-        `${environment.apiUrl}/extract?format=checklist`,
+        `${environment.apiUrl}/extract?format=${format}`,
         form
       )
       .pipe(
