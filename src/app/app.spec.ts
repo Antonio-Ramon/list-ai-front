@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { App } from './app';
 import { ExtractionService } from './services/extraction.service';
 
@@ -10,10 +12,18 @@ describe('App', () => {
   beforeEach(async () => {
     mockExtractionService = { extract: vi.fn() };
 
+    Object.defineProperty(navigator, 'clipboard', {
+      value: { writeText: vi.fn() },
+      writable: true,
+      configurable: true,
+    });
+
     await TestBed.configureTestingModule({
       imports: [App],
       providers: [
         { provide: ExtractionService, useValue: mockExtractionService },
+        { provide: MatSnackBar, useValue: { open: vi.fn() } },
+        provideNoopAnimations(),
       ],
     }).compileComponents();
   });
@@ -121,5 +131,56 @@ describe('App', () => {
 
     expect(mockExtractionService.extract).not.toHaveBeenCalled();
     expect(app.state()).toBe('idle');
+  });
+
+  it('estado idle: spinner, card e erro ocultos no DOM (AC-1)', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.spinner-container')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.result-card')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.error-message')).toBeNull();
+  });
+
+  it('estado loading: spinner visível com role e aria-label (AC-2/3)', () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    app['state'].set('loading');
+    fixture.detectChanges();
+    const container = fixture.nativeElement.querySelector('.spinner-container') as HTMLElement;
+    expect(container).toBeTruthy();
+    expect(container.getAttribute('role')).toBe('status');
+    expect(container.getAttribute('aria-label')).toBe('Processando nota fiscal');
+  });
+
+  it('estado loading: label "Processando nota fiscal..." visível (AC-2)', () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    app['state'].set('loading');
+    fixture.detectChanges();
+    const label = fixture.nativeElement.querySelector('.loading-label') as HTMLElement;
+    expect(label).toBeTruthy();
+    expect(label.textContent!.trim()).toBe('Processando nota fiscal...');
+  });
+
+  it('estado success: card visível, spinner oculto (AC-4)', () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    app['state'].set('success');
+    app['items'].set([{ name: 'Leite', quantity: 1, unit: 'L' }]);
+    app['resultText'].set('1 L Leite');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.result-card')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.spinner-container')).toBeNull();
+  });
+
+  it('estado error: mensagem visível, spinner oculto (AC-5)', () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    app['state'].set('error');
+    app['errorMessage'].set('Algo deu errado. Tente novamente.');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.error-message')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.spinner-container')).toBeNull();
   });
 });

@@ -6,5 +6,25 @@
     <h1 class="app-title">List <span class="app-title__ai">AI</span></h1>
     <p class="app-subtitle">Escaneie sua nota fiscal e obtenha a lista de compras extraída por inteligência artificial.</p>
   </header>
-  <!-- Componentes da Story 2.x serão adicionados aqui -->
+
+  <la-upload-form
+    [isLoading]="isLoading()"
+    (fileSelected)="onFileSelected($event)"
+    (submitted)="onSubmit()"
+  />
+
+  <la-error-message [message]="errorMessage()" />
+
+  @if (isLoading()) {
+    <div class="spinner-container" role="status" aria-label="Processando nota fiscal">
+      <mat-progress-spinner mode="indeterminate" color="primary" />
+      <p class="loading-label">Processando nota fiscal...</p>
+    </div>
+  }
+
+  <la-result-card
+    [hasResult]="hasResult()"
+    [items]="items()"
+    [text]="resultText()"
+  />
 </div>

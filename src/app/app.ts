@@ -1,14 +1,18 @@
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { ExtractionError, ExtractionItem } from './types/extraction.types';
 import { ExtractionService } from './services/extraction.service';
+import { UploadFormComponent } from './components/upload-form/upload-form.component';
+import { ResultCardComponent } from './components/result-card/result-card.component';
+import { ErrorMessageComponent } from './components/error-message/error-message.component';
 
 export type AppState = 'idle' | 'file-selected' | 'loading' | 'success' | 'error';
 
 @Component({
   selector: 'la-root',
   standalone: true,
-  imports: [],
+  imports: [UploadFormComponent, ResultCardComponent, ErrorMessageComponent, MatProgressSpinner],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
