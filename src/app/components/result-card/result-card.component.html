@@ -1,0 +1,28 @@
+@if (hasResult()) {
+  <div class="result-card-section">
+    <div class="result-card" aria-live="polite">
+      <div class="result-card__header">
+        <span class="result-card__label">EXTRAÇÃO CONCLUÍDA</span>
+        <span class="result-card__count-badge">{{ formatCount() }}</span>
+      </div>
+
+      <div class="result-card__list">
+        @for (item of items(); track item.name; let i = $index) {
+          <div class="item-row">
+            <span class="item-row__index">{{ formatIndex(i) }}</span>
+            <span class="item-row__name">{{ item.name }}</span>
+            <span class="item-row__qty">{{ item.quantity }} {{ item.unit }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <button
+      class="btn-copy"
+      type="button"
+      (click)="copyToClipboard()"
+    >
+      {{ copied() ? 'COPIADO!' : 'COPIAR LISTA' }}
+    </button>
+  </div>
+}

@@ -1,0 +1,123 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.result-card-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--la-space-md);
+}
+
+.result-card {
+  background: rgba(15, 52, 96, 0.50);
+  border: 1px solid var(--la-color-accent-border);
+  border-radius: var(--la-radius-md);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.06);
+  animation: fadeIn 200ms ease-out;
+  overflow: hidden;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: var(--la-space-sm);
+    padding: var(--la-space-md);
+    border-bottom: 1px solid var(--la-color-border-subtle);
+  }
+
+  &__label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--la-color-accent);
+    flex: 1;
+  }
+
+  &__count-badge {
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    border-radius: var(--la-radius-sm);
+    padding: 2px 8px;
+    font-family: var(--la-font-mono);
+    font-size: 11px;
+    color: var(--la-color-accent);
+  }
+
+  &__list {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 0 var(--la-space-md) var(--la-space-md);
+  }
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  gap: var(--la-space-sm);
+  padding: var(--la-space-sm) 0;
+  border-bottom: 1px solid var(--la-color-border-subtle);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &__index {
+    font-family: var(--la-font-mono);
+    font-size: 11px;
+    color: var(--la-color-text-low);
+    flex-shrink: 0;
+    min-width: 20px;
+  }
+
+  &__name {
+    font-family: var(--la-font-mono);
+    font-size: 12px;
+    color: var(--la-color-text-high);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__qty {
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    border-radius: var(--la-radius-pill); /* 100px — exceção: pill para qty badges */
+    padding: 2px 8px;
+    font-family: var(--la-font-mono);
+    font-size: 11px;
+    color: var(--la-color-accent);
+    flex-shrink: 0;
+  }
+}
+
+.btn-copy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 14px 24px;
+  background: transparent;
+  color: var(--la-color-accent);
+  border: 1px solid var(--la-color-accent-border);
+  border-radius: var(--la-radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.10);
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
