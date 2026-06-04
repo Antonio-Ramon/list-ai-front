@@ -1,59 +1,118 @@
-# ListaAiFrontend
+# Lista AI — Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.14.
+Web app que extrai listas de compras de notas fiscais usando inteligência artificial. O usuário envia uma foto da nota, a IA retorna os itens estruturados, e a lista pode ser copiada com um clique.
 
-## Development server
+---
 
-To start a local development server, run:
+## Stack
 
-```bash
-ng serve
+| Camada | Tecnologia |
+|---|---|
+| Framework | Angular 21 (standalone components, signals) |
+| UI System | Angular Material v3 — dark theme customizado |
+| Tipografia | Space Grotesk (Google Fonts) |
+| Ícones | Material Icons (self-hosted via `material-icons`) |
+| Estilos | SCSS com design tokens `--la-*` |
+| Testes | Vitest |
+| Build | Angular CLI / esbuild |
+
+---
+
+## Funcionalidades
+
+- **Upload de imagem** — JPG, PNG ou WEBP até 10 MB; preview thumbnail antes de enviar
+- **Extração por IA** — chamada ao backend com loading animado e mensagens de progresso
+- **Formato configurável** — `Checklist` ou `Asterisco`
+- **Tela de resultado** — lista paginável com nome, quantidade e unidade de cada item
+- **Copiar lista** — `navigator.clipboard` com feedback inline; fallback via snackbar
+- **Voltar** — retorna ao formulário sem recarregar a página
+- **Mobile-first** — viewport mínima de 360 px totalmente funcional
+
+---
+
+## Backend
+
+O frontend consome a API pública do serviço Lista AI:
+
+```
+POST https://list-ai-service-production.up.railway.app/extract?format={checklist|asterisk}
+Content-Type: multipart/form-data
+Campo: image (File)
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Rate limit: 10 requisições/min por IP. Timeout do cliente: 60 s.
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Primeiros passos
 
-```bash
-ng generate component component-name
-```
+### Pré-requisitos
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- Node.js ≥ 20.17
+- npm ≥ 10
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+### Instalação
 
 ```bash
-ng build
+npm install
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Rodar em desenvolvimento
 
 ```bash
-ng test
+npm start
+# http://localhost:4200
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### Build de produção
 
 ```bash
-ng e2e
+npm run build
+# dist/lista-ai-frontend/
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Testes
 
-## Additional Resources
+```bash
+npm test
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+
+## Estrutura do projeto
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── upload-form/       # Formulário de upload + preview de imagem
+│   │   ├── result-card/       # Card de resultados + ações VOLTAR / COPIAR
+│   │   └── error-message/     # Mensagens de erro inline (role=alert)
+│   ├── services/
+│   │   └── extraction.service.ts   # Chamada HTTP ao backend
+│   ├── types/
+│   │   └── extraction.types.ts     # ExtractionItem, ExtractionFormat, etc.
+│   ├── utils/
+│   │   └── error-mapper.ts         # Mapeamento de erros da API para strings PT-BR
+│   ├── app.ts                 # Máquina de estados principal (signals)
+│   ├── app.html
+│   └── app.scss
+├── environments/
+│   └── environment.ts         # URL da API
+└── styles.scss                # Design tokens --la-* + tema Material
+```
+
+---
+
+## Design System
+
+Tokens visuais definidos em `src/styles.scss` como variáveis CSS `--la-*`.
+
+| Token | Valor | Uso |
+|---|---|---|
+| `--la-color-bg` | `#1A1A2E` | Fundo da página |
+| `--la-color-surface` | `#16213E` | Superfície de containers |
+| `--la-color-primary` | `#7C4DFF` | Ação principal (violeta) |
+| `--la-color-accent` | `#00E5FF` | Dados / output (cyan) |
+| `--la-color-error` | `#FF5252` | Erros inline |
+| `--la-gradient-accent` | `violet → cyan` | Accent-bar do topo |
