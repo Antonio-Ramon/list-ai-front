@@ -16,6 +16,8 @@ const FORMAT_OPTIONS: FormatOption[] = [
   { id: 'excel', label: 'Excel', hint: 'Colunas / CSV', icon: 'table_chart' },
 ];
 
+const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
 @Component({
   selector: 'la-upload-form',
   standalone: true,
@@ -35,11 +37,37 @@ export class UploadFormComponent {
   readonly formats = FORMAT_OPTIONS;
   readonly format = signal<ExtractionFormat>('checklist');
   readonly fileSizeError = signal<string | null>(null);
+  readonly isDragging = signal(false);
 
   onFileChange(event: Event): void {
     const el = event.target as HTMLInputElement;
     const file = el.files?.[0];
     if (!file) return;
+    this.fileSizeError.set(null);
+    this.fileSelected.emit(file);
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    if (this.isLoading()) return;
+    this.isDragging.set(true);
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragging.set(false);
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragging.set(false);
+    if (this.isLoading()) return;
+    const file = event.dataTransfer?.files?.[0];
+    if (!file) return;
+    if (!ACCEPTED_TYPES.includes(file.type)) {
+      this.fileSizeError.set('Formato não suportado. Use JPG, PNG ou WEBP.');
+      return;
+    }
     this.fileSizeError.set(null);
     this.fileSelected.emit(file);
   }

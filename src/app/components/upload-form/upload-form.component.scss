@@ -35,6 +35,15 @@
     border-color: var(--la-color-accent-border);
   }
 
+  &--dragging {
+    border-color: var(--la-color-accent-border);
+  }
+
+  // Garante que o drop seja tratado pelo label, não pelos filhos
+  &--dragging * {
+    pointer-events: none;
+  }
+
   &__icon {
     display: flex;
     align-items: center;

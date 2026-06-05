@@ -39,7 +39,14 @@
       </div>
     </div>
   } @else {
-    <label class="dropzone" for="file-input">
+    <label
+      class="dropzone"
+      [class.dropzone--dragging]="isDragging()"
+      for="file-input"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+    >
       <span class="dropzone__icon"><mat-icon>cloud_upload</mat-icon></span>
       <span class="dropzone__text">
         <span class="dropzone__title">Arraste a foto da nota aqui</span>
