@@ -10,13 +10,15 @@
           <h1 class="result__title">Lista extraída</h1>
           <p class="result__sub">
             <span class="result__count">
-              <mat-icon>check</mat-icon> {{ items().length }} itens
+              <mat-icon>check</mat-icon>{{ items().length }} itens
             </span>
             @if (formatLabel()) {
-              <span class="result__sub-sep">·</span> {{ formatLabel() }}
+              <span class="result__sub-sep" aria-hidden="true">·</span>
+              <span>{{ formatLabel() }}</span>
             }
             @if (elapsedLabel()) {
-              <span class="result__sub-sep">·</span> {{ elapsedLabel() }}
+              <span class="result__sub-sep" aria-hidden="true">·</span>
+              <span>{{ elapsedLabel() }}</span>
             }
           </p>
         </div>

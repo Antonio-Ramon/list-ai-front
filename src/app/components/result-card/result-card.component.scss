@@ -66,6 +66,10 @@
   }
 
   &__sub {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
     margin: 3px 0 0;
     font-size: 12.5px;
     color: var(--la-color-text-med);
@@ -85,7 +89,6 @@
   }
 
   &__sub-sep {
-    margin: 0 2px;
     color: var(--la-color-text-low);
   }
 
@@ -96,6 +99,10 @@
     grid-template-columns: 340px 1fr;
     gap: 24px;
     padding: 32px;
+
+    > * {
+      min-width: 0;
+    }
   }
 }
 
@@ -259,6 +266,7 @@
   }
 
   &__name {
+    min-width: 0;
     font-size: 14px;
     font-weight: 500;
     color: var(--la-color-text-high);
@@ -284,9 +292,48 @@
   }
 }
 
-// ─── Responsive fallback ──────────────────────────────────────────────────────────
+// ─── Responsive: tablet — fonte e lista empilham ────────────────────────────────
 @media (max-width: 860px) {
   .result__body {
     grid-template-columns: 1fr;
+  }
+}
+
+// ─── Responsive: mobile pattern ──────────────────────────────────────────────────
+@media (max-width: 640px) {
+  .result__header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 16px 18px;
+  }
+
+  .result__title {
+    font-size: 18px;
+  }
+
+  .btn-copy {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .result__body {
+    padding: 18px;
+    gap: 16px;
+  }
+
+  .source-card__stage {
+    padding: 14px;
+  }
+
+  .source-card__image {
+    max-height: 220px;
+  }
+
+  .result-card__head,
+  .item-row {
+    grid-template-columns: 36px 1fr auto;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
