@@ -1,4 +1,4 @@
-# Lista AI — Frontend
+# list-ai — Frontend
 
 Web app que extrai listas de compras de notas fiscais usando inteligência artificial. O usuário envia uma foto da nota, a IA retorna os itens estruturados, e a lista pode ser copiada com um clique.
 
@@ -32,7 +32,7 @@ Web app que extrai listas de compras de notas fiscais usando inteligência artif
 
 ## Backend
 
-O frontend consome a API pública do serviço Lista AI:
+O frontend consome a API pública do serviço list-ai:
 
 ```
 POST https://list-ai-service-production.up.railway.app/extract?format={checklist|asterisk}
@@ -68,7 +68,7 @@ npm start
 
 ```bash
 npm run build
-# dist/lista-ai-frontend/
+# dist/list-ai-frontend/
 ```
 
 ### Testes

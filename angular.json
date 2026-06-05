@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "lista-ai-frontend": {
+    "list-ai-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -61,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "lista-ai-frontend:build:production"
+              "buildTarget": "list-ai-frontend:build:production"
             },
             "development": {
-              "buildTarget": "lista-ai-frontend:build:development"
+              "buildTarget": "list-ai-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
