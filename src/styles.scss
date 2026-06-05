@@ -1,14 +1,13 @@
 @use '@angular/material' as mat;
 @import 'material-icons/iconfont/material-icons.css';
 
-// ─── Angular Material v3 — Dark Theme ────────────────────────────────────────
+// ─── Angular Material v3 — Light Theme ───────────────────────────────────────
 html {
   height: 100%;
   @include mat.theme((
     color: (
-      theme-type: dark,
-      primary: mat.$violet-palette,
-      tertiary: mat.$cyan-palette,
+      theme-type: light,
+      primary: mat.$green-palette,
     ),
     typography: 'Space Grotesk',
     density: 0,
@@ -18,24 +17,24 @@ html {
 // ─── Design Tokens --la-* ────────────────────────────────────────────────────
 :root {
   // Colors
-  --la-color-bg:             #1A1A2E;
-  --la-color-surface:        #16213E;
-  --la-color-surface-card:   #0F3460;
-  --la-color-primary:        #7C4DFF;
-  --la-color-primary-hover:  #651FFF;
+  --la-color-bg:             #FFFFFF;
+  --la-color-surface:        #F9FAF8;
+  --la-color-surface-card:   #FFFFFF;
+  --la-color-primary:        #2E7D32;
+  --la-color-primary-hover:  #1B5E20;
   --la-color-primary-fg:     #FFFFFF;
-  --la-color-accent:         #00E5FF;
-  --la-color-accent-fg:      #1A1A2E;
-  --la-color-accent-glow:    rgba(0, 229, 255, 0.15);
-  --la-color-accent-border:  rgba(0, 229, 255, 0.40);
-  --la-color-border-subtle:  rgba(124, 77, 255, 0.20);
-  --la-color-border-primary: rgba(124, 77, 255, 0.40);
-  --la-color-text-high:      #E0E0E0;
-  --la-color-text-med:       #90A4AE;
-  --la-color-text-low:       #546E7A;
-  --la-color-error:          #FF5252;
+  --la-color-accent:         #66BB6A;
+  --la-color-accent-fg:      #FFFFFF;
+  --la-color-accent-glow:    rgba(102, 187, 106, 0.15);
+  --la-color-accent-border:  rgba(46, 125, 50, 0.40);
+  --la-color-border-subtle:  #E0E4DF;
+  --la-color-border-primary: #C8D0C7;
+  --la-color-text-high:      #1C1F1C;
+  --la-color-text-med:       #4A5048;
+  --la-color-text-low:       #7A8078;
+  --la-color-error:          #D32F2F;
   --la-color-error-fg:       #FFFFFF;
-  --la-gradient-accent:      linear-gradient(90deg, #7C4DFF 0%, #00E5FF 100%);
+  --la-gradient-accent:      linear-gradient(90deg, #2E7D32 0%, #66BB6A 100%);
 
   // Spacing
   --la-space-xs:  4px;
@@ -56,7 +55,6 @@ html {
 body {
   margin: 0;
   height: 100%;
-  color-scheme: dark;
   background-color: var(--la-color-bg);
   color: var(--la-color-text-high);
   font-family: 'Space Grotesk', sans-serif;

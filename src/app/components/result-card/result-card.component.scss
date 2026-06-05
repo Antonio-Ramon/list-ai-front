@@ -16,10 +16,10 @@
 }
 
 .result-card {
-  background: rgba(15, 52, 96, 0.50);
-  border: 1px solid var(--la-color-accent-border);
+  background: var(--la-color-surface-card);
+  border: 1px solid var(--la-color-border-subtle);
   border-radius: var(--la-radius-md);
-  box-shadow: 0 0 20px rgba(0, 229, 255, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   animation: fadeIn 200ms ease-out;
   overflow: hidden;
 
@@ -41,12 +41,12 @@
   }
 
   &__count-badge {
-    background: rgba(0, 229, 255, 0.08);
-    border: 1px solid rgba(0, 229, 255, 0.25);
+    background: rgba(102, 187, 106, 0.12);
+    border: 1px solid rgba(46, 125, 50, 0.30);
     border-radius: var(--la-radius-sm);
     padding: 2px 8px;
     font-size: 11px;
-    color: var(--la-color-accent);
+    color: var(--la-color-primary);
   }
 
   &__list {
@@ -84,12 +84,12 @@
   }
 
   &__qty {
-    background: rgba(0, 229, 255, 0.08);
-    border: 1px solid rgba(0, 229, 255, 0.25);
+    background: rgba(102, 187, 106, 0.12);
+    border: 1px solid rgba(46, 125, 50, 0.30);
     border-radius: var(--la-radius-pill); /* 100px — exceção: pill para qty badges */
     padding: 2px 8px;
     font-size: 11px;
-    color: var(--la-color-accent);
+    color: var(--la-color-primary);
     flex-shrink: 0;
   }
 }
@@ -139,7 +139,7 @@
   letter-spacing: 1.5px;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 0 12px rgba(0, 229, 255, 0.10);
+  box-shadow: 0 0 12px rgba(46, 125, 50, 0.15);
   transition: opacity 0.2s;
 
   &:hover {

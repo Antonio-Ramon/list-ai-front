@@ -22,10 +22,10 @@
 
 .app-tag {
   display: inline-block;
-  background: rgba(0, 229, 255, 0.08);
-  border: 1px solid rgba(0, 229, 255, 0.25);
+  background: rgba(102, 187, 106, 0.12);
+  border: 1px solid rgba(46, 125, 50, 0.30);
   border-radius: var(--la-radius-sm);
-  color: var(--la-color-accent);
+  color: var(--la-color-primary);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 2px;
@@ -79,7 +79,7 @@
     height: 6px;
     background: var(--la-color-primary);
     border-radius: 2px;
-    box-shadow: 0 0 8px rgba(124, 77, 255, 0.5);
+    box-shadow: 0 0 8px rgba(46, 125, 50, 0.4);
     animation: eq-bar 0.8s ease-in-out infinite;
 
     &:nth-child(1) { animation-delay: 0s; }
@@ -87,7 +87,7 @@
     &:nth-child(3) {
       animation-delay: 0.24s;
       background: var(--la-color-accent);
-      box-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+      box-shadow: 0 0 8px rgba(102, 187, 106, 0.5);
     }
     &:nth-child(4) { animation-delay: 0.36s; }
     &:nth-child(5) { animation-delay: 0.48s; }
