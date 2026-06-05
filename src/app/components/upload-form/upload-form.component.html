@@ -52,24 +52,28 @@
       type="button"
       class="format-toggle__btn"
       [class.format-toggle__btn--active]="format() === 'checklist'"
+      [disabled]="isLoading()"
       (click)="format.set('checklist')"
     ><mat-icon>checklist</mat-icon> Checklist</button>
     <button
       type="button"
       class="format-toggle__btn"
       [class.format-toggle__btn--active]="format() === 'asterisk'"
+      [disabled]="isLoading()"
       (click)="format.set('asterisk')"
     ><mat-icon>format_list_bulleted</mat-icon> Asterisco</button>
     <button
       type="button"
       class="format-toggle__btn"
       [class.format-toggle__btn--active]="format() === 'simple'"
+      [disabled]="isLoading()"
       (click)="format.set('simple')"
     ><mat-icon>list</mat-icon> Simples</button>
     <button
       type="button"
       class="format-toggle__btn"
       [class.format-toggle__btn--active]="format() === 'excel'"
+      [disabled]="isLoading()"
       (click)="format.set('excel')"
     ><mat-icon>table_chart</mat-icon> Excel</button>
   </div>
