@@ -1,6 +1,20 @@
-import { Component, DestroyRef, inject, input, output, signal } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ExtractionFormat } from '../../types/extraction.types';
+
+interface FormatOption {
+  id: ExtractionFormat;
+  label: string;
+  hint: string;
+  icon: string;
+}
+
+const FORMAT_OPTIONS: FormatOption[] = [
+  { id: 'checklist', label: 'Checklist', hint: 'Caixas de marcar', icon: 'checklist' },
+  { id: 'asterisk', label: 'Asterisco', hint: '* item', icon: 'format_list_bulleted' },
+  { id: 'simple', label: 'Simples', hint: 'Texto puro', icon: 'list' },
+  { id: 'excel', label: 'Excel', hint: 'Colunas / CSV', icon: 'table_chart' },
+];
 
 @Component({
   selector: 'la-upload-form',
@@ -10,43 +24,27 @@ import { ExtractionFormat } from '../../types/extraction.types';
   styleUrl: './upload-form.component.scss',
 })
 export class UploadFormComponent {
-  private readonly destroyRef = inject(DestroyRef);
-
   readonly isLoading = input.required<boolean>();
+  readonly selectedFile = input<File | null>(null);
+  readonly previewUrl = input<string | null>(null);
 
   readonly fileSelected = output<File>();
   readonly fileRemoved = output<void>();
   readonly submitted = output<ExtractionFormat>();
 
+  readonly formats = FORMAT_OPTIONS;
   readonly format = signal<ExtractionFormat>('checklist');
-  readonly selectedFile = signal<File | null>(null);
-  readonly previewUrl = signal<string | null>(null);
   readonly fileSizeError = signal<string | null>(null);
-
-  constructor() {
-    this.destroyRef.onDestroy(() => {
-      const url = this.previewUrl();
-      if (url) URL.revokeObjectURL(url);
-    });
-  }
 
   onFileChange(event: Event): void {
     const el = event.target as HTMLInputElement;
     const file = el.files?.[0];
     if (!file) return;
     this.fileSizeError.set(null);
-    const oldUrl = this.previewUrl();
-    if (oldUrl) URL.revokeObjectURL(oldUrl);
-    this.previewUrl.set(URL.createObjectURL(file));
-    this.selectedFile.set(file);
     this.fileSelected.emit(file);
   }
 
   onRemoveFile(): void {
-    const url = this.previewUrl();
-    if (url) URL.revokeObjectURL(url);
-    this.previewUrl.set(null);
-    this.selectedFile.set(null);
     this.fileSizeError.set(null);
     this.fileRemoved.emit();
   }

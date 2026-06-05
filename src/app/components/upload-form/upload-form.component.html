@@ -1,22 +1,37 @@
-<section class="upload-form">
-  <span class="upload-label">Selecione a Nota Fiscal</span>
-
+<section class="upload-grid">
+  <!-- ── Left: drop area (idle) / preview (file selected) ── -->
   @if (selectedFile() && previewUrl()) {
-    <div class="file-preview" [class.file-preview--loading]="isLoading()">
-      <div class="file-preview__image-wrap">
-        <img
-          class="file-preview__image"
-          [src]="previewUrl()!"
-          [alt]="selectedFile()!.name"
-        />
+    <div class="preview-card" [class.preview-card--loading]="isLoading()">
+      <div class="preview-card__head">
+        <span class="preview-card__caption">Imagem da nota</span>
+        <span class="preview-card__badge">
+          <mat-icon>document_scanner</mat-icon> Pronta para enviar
+        </span>
       </div>
-      <div class="file-preview__footer">
-        <span class="file-preview__dot"></span>
-        <span class="file-preview__name">{{ selectedFile()!.name }}</span>
-        <span class="file-preview__size">{{ formatFileSize(selectedFile()!.size) }}</span>
+
+      <div class="preview-card__stage">
+        <img class="preview-card__image" [src]="previewUrl()!" [alt]="selectedFile()!.name" />
+      </div>
+
+      <div class="preview-card__footer">
+        <span class="preview-card__thumb"><mat-icon>photo_camera</mat-icon></span>
+        <span class="preview-card__meta">
+          <span class="preview-card__name">{{ selectedFile()!.name }}</span>
+          <span class="preview-card__size">{{ formatFileSize(selectedFile()!.size) }}</span>
+        </span>
+        <label class="btn-ghost" for="file-input">
+          Trocar
+          <input
+            type="file"
+            id="file-input"
+            accept="image/jpeg,image/png,image/webp"
+            (change)="onFileChange($event)"
+            hidden
+          />
+        </label>
         <button
           type="button"
-          class="file-preview__remove"
+          class="preview-card__remove"
           [disabled]="isLoading()"
           (click)="onRemoveFile()"
           aria-label="Remover arquivo"
@@ -24,66 +39,65 @@
       </div>
     </div>
   } @else {
-    <label
-      class="upload-zone"
-      for="file-input"
-    >
-      <mat-icon class="upload-zone__icon">upload_file</mat-icon>
-      <span class="upload-zone__primary">SELECIONAR ARQUIVO</span>
-      <span class="upload-zone__secondary">JPG · PNG · WEBP — máx 10 MB</span>
+    <label class="dropzone" for="file-input">
+      <span class="dropzone__icon"><mat-icon>cloud_upload</mat-icon></span>
+      <span class="dropzone__text">
+        <span class="dropzone__title">Arraste a foto da nota aqui</span>
+        <span class="dropzone__subtitle">ou clique para escolher um arquivo do computador</span>
+      </span>
+      <span class="dropzone__cta">
+        <mat-icon>photo_camera</mat-icon> Selecionar arquivo
+      </span>
+      <span class="dropzone__hint">JPG · PNG · WEBP — máx 10 MB</span>
       <input
         type="file"
         id="file-input"
         accept="image/jpeg,image/png,image/webp"
         (change)="onFileChange($event)"
-        class="upload-zone__input"
+        class="dropzone__input"
+        hidden
       />
     </label>
   }
 
-  @if (fileSizeError()) {
-    <p class="upload-error" role="alert">{{ fileSizeError() }}</p>
-  }
+  <!-- ── Right: config rail ── -->
+  <div class="config-rail">
+    <span class="config-rail__label">Formato da lista</span>
 
-  <span class="upload-label">Formato da lista</span>
+    <div class="format-list" role="radiogroup" aria-label="Formato da lista">
+      @for (f of formats; track f.id) {
+        <button
+          type="button"
+          class="format-opt"
+          role="radio"
+          [attr.aria-checked]="format() === f.id"
+          [class.format-opt--active]="format() === f.id"
+          [disabled]="isLoading()"
+          (click)="format.set(f.id)"
+        >
+          <mat-icon class="format-opt__icon">{{ f.icon }}</mat-icon>
+          <span class="format-opt__text">
+            <span class="format-opt__name">{{ f.label }}</span>
+            <span class="format-opt__hint">{{ f.hint }}</span>
+          </span>
+          <span class="format-opt__radio"></span>
+        </button>
+      }
+    </div>
 
-  <div class="format-toggle" role="group" aria-label="Formato da lista">
+    @if (fileSizeError()) {
+      <p class="upload-error" role="alert">{{ fileSizeError() }}</p>
+    }
+
     <button
+      class="btn-submit"
       type="button"
-      class="format-toggle__btn"
-      [class.format-toggle__btn--active]="format() === 'checklist'"
-      [disabled]="isLoading()"
-      (click)="format.set('checklist')"
-    ><mat-icon>checklist</mat-icon> Checklist</button>
-    <button
-      type="button"
-      class="format-toggle__btn"
-      [class.format-toggle__btn--active]="format() === 'asterisk'"
-      [disabled]="isLoading()"
-      (click)="format.set('asterisk')"
-    ><mat-icon>format_list_bulleted</mat-icon> Asterisco</button>
-    <button
-      type="button"
-      class="format-toggle__btn"
-      [class.format-toggle__btn--active]="format() === 'simple'"
-      [disabled]="isLoading()"
-      (click)="format.set('simple')"
-    ><mat-icon>list</mat-icon> Simples</button>
-    <button
-      type="button"
-      class="format-toggle__btn"
-      [class.format-toggle__btn--active]="format() === 'excel'"
-      [disabled]="isLoading()"
-      (click)="format.set('excel')"
-    ><mat-icon>table_chart</mat-icon> Excel</button>
+      [class.btn-submit--disabled]="!selectedFile() || isLoading()"
+      [disabled]="!selectedFile() || isLoading()"
+      (click)="onSubmit()"
+    >
+      <mat-icon>auto_awesome</mat-icon>
+      {{ selectedFile() ? 'Extrair lista' : 'Selecione uma imagem' }}
+    </button>
   </div>
-
-  <button
-    class="btn-submit"
-    type="button"
-    [disabled]="!selectedFile() || isLoading()"
-    (click)="onSubmit()"
-  >
-    <mat-icon>auto_awesome</mat-icon> EXTRAIR LISTA
-  </button>
 </section>
