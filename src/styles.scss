@@ -62,6 +62,8 @@ html {
 html, body {
   margin: 0;
   height: 100%;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {

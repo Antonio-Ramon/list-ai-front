@@ -4,6 +4,11 @@
   gap: 24px;
   align-items: stretch;
   min-height: 100%;
+
+  // Impede que conteúdo sem quebra estoure as colunas (scroll horizontal)
+  > * {
+    min-width: 0;
+  }
 }
 
 // ─── Glass surface shared look ──────────────────────────────────────────────────
@@ -299,6 +304,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
   padding: 13px 14px;
   border-radius: 12px;
   text-align: left;
@@ -416,7 +422,7 @@
   }
 }
 
-// ─── Responsive fallback ──────────────────────────────────────────────────────────
+// ─── Responsive: tablet — colunas empilham ──────────────────────────────────────
 @media (max-width: 860px) {
   .upload-grid {
     grid-template-columns: 1fr;
@@ -424,5 +430,62 @@
 
   .preview-card__stage {
     min-height: 200px;
+  }
+
+  // Rail empilhado tem altura de conteúdo: margin-top:auto vira 0 e cola o botão
+  .btn-submit {
+    margin-top: 18px;
+  }
+}
+
+// ─── Responsive: mobile pattern ──────────────────────────────────────────────────
+@media (max-width: 640px) {
+  .upload-grid {
+    gap: 16px;
+  }
+
+  .dropzone {
+    padding: 28px 18px;
+    gap: 14px;
+
+    &__icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+
+      mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+      }
+    }
+
+    &__title {
+      font-size: 16px;
+    }
+
+    &__subtitle {
+      font-size: 12.5px;
+    }
+  }
+
+  .config-rail {
+    padding: 18px;
+  }
+
+  // Formatos em grade 2×2 compacta (igual ao mockup mobile)
+  .format-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .format-opt {
+    padding: 12px 14px;
+
+    &__hint,
+    &__radio {
+      display: none;
+    }
   }
 }

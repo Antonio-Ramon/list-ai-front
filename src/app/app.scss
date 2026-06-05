@@ -311,8 +311,8 @@
   }
 }
 
-// ─── Responsive fallback (desktop-first) ────────────────────────────────────────
-@media (max-width: 720px) {
+// ─── Responsive: mobile pattern (desktop-first) ──────────────────────────────────
+@media (max-width: 640px) {
   .app-shell {
     flex-direction: column;
     height: auto;
@@ -320,28 +320,51 @@
     overflow: visible;
   }
 
+  // Sidebar colapsa numa top bar minimalista (só a logo)
   .sidebar {
     width: 100%;
     flex-direction: row;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     border-right: none;
     border-bottom: 1px solid var(--la-color-border-subtle);
     padding: 14px 18px;
   }
 
-  .sidebar__nav {
-    flex-direction: row;
-    margin-left: auto;
+  .sidebar__brand {
+    padding-left: 0;
   }
 
-  .sidebar__nav-label,
+  .sidebar__nav,
   .sidebar__footer {
     display: none;
   }
 
   .workarea {
     overflow: visible;
+  }
+
+  .workarea__body {
+    padding: 18px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 18px 18px 16px;
+
+    &__title {
+      font-size: 19px;
+    }
+
+    &__subtitle {
+      font-size: 12.5px;
+    }
+  }
+
+  .loading-bop {
+    inset: 18px;
   }
 }
 
