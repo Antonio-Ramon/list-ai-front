@@ -1,12 +1,12 @@
 @use '@angular/material' as mat;
 @import 'material-icons/iconfont/material-icons.css';
 
-// ─── Angular Material v3 — Light Theme ───────────────────────────────────────
+// ─── Angular Material v3 — Aurora Dark Theme ─────────────────────────────────
 html {
   height: 100%;
   @include mat.theme((
     color: (
-      theme-type: light,
+      theme-type: dark,
       primary: mat.$green-palette,
     ),
     typography: 'Space Grotesk',
@@ -14,27 +14,34 @@ html {
   ));
 }
 
-// ─── Design Tokens --la-* ────────────────────────────────────────────────────
+// ─── Design Tokens --la-* ── Aurora (deep forest green + lime) ────────────────
 :root {
   // Colors
-  --la-color-bg:             #FFFFFF;
-  --la-color-surface:        #F9FAF8;
-  --la-color-surface-card:   #FFFFFF;
-  --la-color-primary:        #2E7D32;
-  --la-color-primary-hover:  #1B5E20;
-  --la-color-primary-fg:     #FFFFFF;
-  --la-color-accent:         #66BB6A;
-  --la-color-accent-fg:      #FFFFFF;
-  --la-color-accent-glow:    rgba(102, 187, 106, 0.15);
-  --la-color-accent-border:  rgba(46, 125, 50, 0.40);
-  --la-color-border-subtle:  #E0E4DF;
-  --la-color-border-primary: #C8D0C7;
-  --la-color-text-high:      #1C1F1C;
-  --la-color-text-med:       #4A5048;
-  --la-color-text-low:       #7A8078;
-  --la-color-error:          #D32F2F;
-  --la-color-error-fg:       #FFFFFF;
-  --la-gradient-accent:      linear-gradient(90deg, #2E7D32 0%, #66BB6A 100%);
+  --la-color-bg:             #0A1410;
+  --la-color-bg-raised:      #0F1B16;
+  --la-color-surface:        rgba(255, 255, 255, 0.045);
+  --la-color-surface-card:   rgba(255, 255, 255, 0.045);
+  --la-color-primary:        #B6F26A;
+  --la-color-primary-hover:  #C6F78C;
+  --la-color-primary-fg:     #0A1410;
+  --la-color-accent:         #B6F26A;
+  --la-color-accent-fg:      #0A1410;
+  --la-color-accent-dim:     rgba(182, 242, 106, 0.16);
+  --la-color-accent-glow:    rgba(182, 242, 106, 0.45);
+  --la-color-accent-border:  #B6F26A;
+  --la-color-border-subtle:  rgba(180, 255, 200, 0.10);
+  --la-color-border-primary: rgba(180, 255, 200, 0.10);
+  --la-color-text-high:      #E8F0EA;
+  --la-color-text-med:       #8FA89A;
+  --la-color-text-low:       #5E7367;
+  --la-color-error:          #F38C7A;
+  --la-color-error-fg:       #0A1410;
+  --la-gradient-accent:      linear-gradient(135deg, #B6F26A 0%, #5DBF85 100%);
+
+  // Fonts
+  --la-font-sans:  'Space Grotesk', system-ui, sans-serif;
+  --la-font-mono:  'JetBrains Mono', monospace;
+  --la-font-serif: 'Instrument Serif', 'Space Grotesk', serif;
 
   // Spacing
   --la-space-xs:  4px;
@@ -52,23 +59,16 @@ html {
 }
 
 // ─── Base ─────────────────────────────────────────────────────────────────────
-body {
+html, body {
   margin: 0;
   height: 100%;
-  background-color: var(--la-color-bg);
-  color: var(--la-color-text-high);
-  font-family: 'Space Grotesk', sans-serif;
 }
 
-// ─── Layout responsivo ────────────────────────────────────────────────────────
-.app-container {
-  max-width: 480px;
-  margin: 0 auto;
-  padding: var(--la-space-xxl) var(--la-space-lg); // 48px 24px — mobile ≤480px
-
-  @media (min-width: 481px) {
-    padding: var(--la-space-xxl) var(--la-space-xxl); // 48px 48px — tablet/desktop
-  }
+body {
+  color-scheme: dark;
+  background-color: var(--la-color-bg);
+  color: var(--la-color-text-high);
+  font-family: var(--la-font-sans);
 }
 
 // ─── prefers-reduced-motion ───────────────────────────────────────────────────
