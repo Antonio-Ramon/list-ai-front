@@ -1,11 +1,12 @@
 import { Component, inject, input, output, signal } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ExtractionItem } from '../../types/extraction.types';
 
 @Component({
   selector: 'la-result-card',
   standalone: true,
-  imports: [],
+  imports: [MatIconModule],
   templateUrl: './result-card.component.html',
   styleUrl: './result-card.component.scss',
 })
@@ -15,6 +16,8 @@ export class ResultCardComponent {
   readonly hasResult = input.required<boolean>();
   readonly items = input.required<ExtractionItem[]>();
   readonly text = input.required<string>();
+  readonly imageUrl = input<string | null>(null);
+  readonly imageName = input<string>('');
 
   readonly back = output<void>();
 

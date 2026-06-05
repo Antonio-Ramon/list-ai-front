@@ -1,29 +1,67 @@
 @if (hasResult()) {
-  <div class="result-card-section">
-    <div class="result-card" aria-live="polite">
-      <div class="result-card__header">
-        <span class="result-card__label">EXTRAÇÃO CONCLUÍDA</span>
-        <span class="result-card__count-badge">{{ formatCount() }}</span>
+  <div class="result" aria-live="polite">
+    <!-- ── Header ── -->
+    <header class="result__header">
+      <div class="result__lead">
+        <button class="result__back" type="button" (click)="back.emit()" aria-label="Voltar">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div>
+          <h1 class="result__title">Lista extraída</h1>
+          <p class="result__sub">
+            <span class="result__count">
+              <mat-icon>check</mat-icon> {{ items().length }} itens
+            </span>
+          </p>
+        </div>
       </div>
 
-      <div class="result-card__list">
-        @for (item of items(); track item.name; let i = $index) {
-          <div class="item-row">
-            <span class="item-row__index">{{ formatIndex(i) }}</span>
-            <span class="item-row__name">{{ item.name }}</span>
-            <span class="item-row__qty">{{ item.quantity }} {{ item.unit }}</span>
-          </div>
-        }
-      </div>
-    </div>
-
-    <div class="result-actions">
-      <button class="btn-back" type="button" (click)="back.emit()">
-        VOLTAR
-      </button>
       <button class="btn-copy" type="button" (click)="copyToClipboard()">
-        {{ copied() ? 'COPIADO!' : 'COPIAR' }}
+        <mat-icon>{{ copied() ? 'check' : 'content_copy' }}</mat-icon>
+        {{ copied() ? 'Copiado!' : 'Copiar lista' }}
       </button>
+    </header>
+
+    <!-- ── Body ── -->
+    <div class="result__body">
+      <!-- Source -->
+      <aside class="source-card">
+        <div class="source-card__stage">
+          @if (imageUrl()) {
+            <img class="source-card__image" [src]="imageUrl()!" [alt]="imageName() || 'Nota fiscal'" />
+          } @else {
+            <mat-icon class="source-card__placeholder">receipt_long</mat-icon>
+          }
+        </div>
+        <div class="source-card__meta">
+          <span class="source-card__dot"></span>
+          <span class="source-card__text">
+            <span class="source-card__name">{{ imageName() || 'Nota fiscal' }}</span>
+            <span class="source-card__caption">Fonte da extração</span>
+          </span>
+        </div>
+      </aside>
+
+      <!-- List -->
+      <div class="result-card">
+        <div class="result-card__head">
+          <span class="result-card__col result-card__col--idx">#</span>
+          <span class="result-card__col">Item</span>
+          <span class="result-card__col result-card__col--qty">Quantidade</span>
+        </div>
+
+        <div class="result-card__list">
+          @for (item of items(); track item.name; let i = $index) {
+            <div class="item-row">
+              <span class="item-row__index">{{ formatIndex(i) }}</span>
+              <span class="item-row__name">{{ item.name }}</span>
+              <span class="item-row__qty-wrap">
+                <span class="item-row__qty">{{ item.quantity }} {{ item.unit }}</span>
+              </span>
+            </div>
+          }
+        </div>
+      </div>
     </div>
   </div>
 }
