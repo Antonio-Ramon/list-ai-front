@@ -1,5 +1,6 @@
 import { Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatIconModule } from '@angular/material/icon';
 import { ExtractionError, ExtractionFormat, ExtractionItem } from './types/extraction.types';
 import { ExtractionService } from './services/extraction.service';
 import { UploadFormComponent } from './components/upload-form/upload-form.component';
@@ -27,7 +28,7 @@ const LOADING_MESSAGES = [
 @Component({
   selector: 'la-root',
   standalone: true,
-  imports: [UploadFormComponent, ResultCardComponent, ErrorMessageComponent],
+  imports: [MatIconModule, UploadFormComponent, ResultCardComponent, ErrorMessageComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -41,6 +42,9 @@ export class App {
   readonly resultText = signal<string>('');
   readonly errorMessage = signal<string | null>(null);
   readonly selectedFile = signal<File | null>(null);
+  readonly previewUrl = signal<string | null>(null);
+
+  readonly fileName = computed(() => this.selectedFile()?.name ?? '');
 
   readonly isLoading = computed(() => this.state() === 'loading');
   readonly hasResult = computed(() => this.state() === 'success');
@@ -66,29 +70,39 @@ export class App {
 
     this.destroyRef.onDestroy(() => {
       if (this.loadingTimer !== null) clearInterval(this.loadingTimer);
+      this.revokePreview();
     });
   }
 
+  private revokePreview(): void {
+    const url = this.previewUrl();
+    if (url) URL.revokeObjectURL(url);
+  }
+
+  private reset(): void {
+    this.revokePreview();
+    this.previewUrl.set(null);
+    this.selectedFile.set(null);
+    this.items.set([]);
+    this.resultText.set('');
+    this.errorMessage.set(null);
+    this.state.set('idle');
+  }
+
   onFileSelected(file: File): void {
+    this.revokePreview();
+    this.previewUrl.set(URL.createObjectURL(file));
     this.selectedFile.set(file);
     this.errorMessage.set(null);
     this.state.set('file-selected');
   }
 
   onFileRemoved(): void {
-    this.selectedFile.set(null);
-    this.items.set([]);
-    this.resultText.set('');
-    this.errorMessage.set(null);
-    this.state.set('idle');
+    this.reset();
   }
 
   onBack(): void {
-    this.selectedFile.set(null);
-    this.items.set([]);
-    this.resultText.set('');
-    this.errorMessage.set(null);
-    this.state.set('idle');
+    this.reset();
   }
 
   onSubmit(format: ExtractionFormat): void {

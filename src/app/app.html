@@ -1,40 +1,87 @@
-<div class="accent-bar" aria-hidden="true"></div>
+<div class="app-shell">
+  <div class="aurora-bg" aria-hidden="true">
+    <span class="aurora-bg__glow aurora-bg__glow--lime"></span>
+    <span class="aurora-bg__glow aurora-bg__glow--teal"></span>
+    <span class="aurora-bg__glow aurora-bg__glow--mint"></span>
+  </div>
 
-<div class="app-container">
-  <header class="app-header">
-    <span class="app-tag">AI-POWERED</span>
-    <h1 class="app-title">List <span class="app-title__ai">AI</span></h1>
-    <p class="app-subtitle">Escaneie sua nota fiscal e obtenha a lista de compras extraída por inteligência artificial.</p>
-  </header>
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <span class="wordmark">
+        <span class="wordmark__mark"><mat-icon>eco</mat-icon></span>
+        <span class="wordmark__text">lista<span class="wordmark__accent">.ai</span></span>
+      </span>
+    </div>
 
-  @if (hasResult()) {
-    <la-result-card
-      [hasResult]="hasResult()"
-      [items]="items()"
-      [text]="resultText()"
-      (back)="onBack()"
-    />
-  } @else {
-    <la-upload-form
-      [isLoading]="isLoading()"
-      (fileSelected)="onFileSelected($event)"
-      (fileRemoved)="onFileRemoved()"
-      (submitted)="onSubmit($event)"
-    />
+    <nav class="sidebar__nav" aria-label="Menu principal">
+      <span class="sidebar__nav-label">Menu</span>
+      <button type="button" class="nav-item nav-item--active" aria-current="page">
+        <mat-icon>document_scanner</mat-icon> Escanear
+      </button>
+      <button type="button" class="nav-item" disabled>
+        <mat-icon>history</mat-icon> Histórico
+      </button>
+    </nav>
 
-    <la-error-message [message]="errorMessage()" />
-
-    @if (isLoading()) {
-      <div class="loading-bop" role="status" aria-label="Processando nota fiscal">
-        <div class="loading-bop__bars" aria-hidden="true">
-          <span class="loading-bop__bar"></span>
-          <span class="loading-bop__bar"></span>
-          <span class="loading-bop__bar"></span>
-          <span class="loading-bop__bar"></span>
-          <span class="loading-bop__bar"></span>
+    <div class="sidebar__footer">
+      <div class="status-card">
+        <div class="status-card__head">
+          <span class="status-card__dot"></span>
+          <span>API conectada</span>
         </div>
-        <p class="loading-bop__message">{{ loadingMessage() }}</p>
+        <p class="status-card__hint">Fotos nítidas e bem iluminadas extraem melhor.</p>
+      </div>
+    </div>
+  </aside>
+
+  <main class="workarea">
+    @if (hasResult()) {
+      <la-result-card
+        [hasResult]="hasResult()"
+        [items]="items()"
+        [text]="resultText()"
+        [imageUrl]="previewUrl()"
+        [imageName]="fileName()"
+        (back)="onBack()"
+      />
+    } @else {
+      <header class="topbar">
+        <div class="topbar__titles">
+          <h1 class="topbar__title">Escanear nota fiscal</h1>
+          <p class="topbar__subtitle">Suba a foto da nota — a IA devolve a lista pronta pra copiar.</p>
+        </div>
+        <div class="topbar__meta">
+          <span class="topbar__pill">
+            <span class="topbar__pill-dot"></span> IA pronta · ~6s
+          </span>
+        </div>
+      </header>
+
+      <div class="workarea__body">
+        <la-upload-form
+          [isLoading]="isLoading()"
+          [selectedFile]="selectedFile()"
+          [previewUrl]="previewUrl()"
+          (fileSelected)="onFileSelected($event)"
+          (fileRemoved)="onFileRemoved()"
+          (submitted)="onSubmit($event)"
+        />
+
+        <la-error-message [message]="errorMessage()" />
+
+        @if (isLoading()) {
+          <div class="loading-bop" role="status" aria-label="Processando nota fiscal">
+            <div class="loading-bop__bars" aria-hidden="true">
+              <span class="loading-bop__bar"></span>
+              <span class="loading-bop__bar"></span>
+              <span class="loading-bop__bar"></span>
+              <span class="loading-bop__bar"></span>
+              <span class="loading-bop__bar"></span>
+            </div>
+            <p class="loading-bop__message">{{ loadingMessage() }}</p>
+          </div>
+        }
       </div>
     }
-  }
+  </main>
 </div>
