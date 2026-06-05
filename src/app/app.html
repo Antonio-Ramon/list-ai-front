@@ -9,7 +9,7 @@
     <div class="sidebar__brand">
       <span class="wordmark">
         <span class="wordmark__mark"><mat-icon>eco</mat-icon></span>
-        <span class="wordmark__text">lista<span class="wordmark__accent">.ai</span></span>
+        <span class="wordmark__text">List<span class="wordmark__accent">.ai</span></span>
       </span>
     </div>
 
@@ -42,6 +42,8 @@
         [text]="resultText()"
         [imageUrl]="previewUrl()"
         [imageName]="fileName()"
+        [format]="usedFormat()"
+        [elapsedSeconds]="elapsedSeconds()"
         (back)="onBack()"
       />
     } @else {

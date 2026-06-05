@@ -43,6 +43,8 @@ export class App {
   readonly errorMessage = signal<string | null>(null);
   readonly selectedFile = signal<File | null>(null);
   readonly previewUrl = signal<string | null>(null);
+  readonly elapsedSeconds = signal<number | null>(null);
+  readonly usedFormat = signal<ExtractionFormat | null>(null);
 
   readonly fileName = computed(() => this.selectedFile()?.name ?? '');
 
@@ -85,6 +87,8 @@ export class App {
     this.selectedFile.set(null);
     this.items.set([]);
     this.resultText.set('');
+    this.elapsedSeconds.set(null);
+    this.usedFormat.set(null);
     this.errorMessage.set(null);
     this.state.set('idle');
   }
@@ -120,6 +124,8 @@ export class App {
           this.state.set('success');
           this.items.set(res.items);
           this.resultText.set(res.text);
+          this.elapsedSeconds.set(res.elapsed_seconds ?? null);
+          this.usedFormat.set(format);
           this.errorMessage.set(null);
         }
       });

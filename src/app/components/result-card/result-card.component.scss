@@ -84,6 +84,11 @@
     }
   }
 
+  &__sub-sep {
+    margin: 0 2px;
+    color: var(--la-color-text-low);
+  }
+
   &__body {
     flex: 1;
     min-height: 0;

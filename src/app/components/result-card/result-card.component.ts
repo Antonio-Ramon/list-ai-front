@@ -1,7 +1,14 @@
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ExtractionItem } from '../../types/extraction.types';
+import { ExtractionFormat, ExtractionItem } from '../../types/extraction.types';
+
+const FORMAT_LABELS: Record<ExtractionFormat, string> = {
+  checklist: 'Checklist',
+  asterisk: 'Asterisco',
+  simple: 'Simples',
+  excel: 'Excel',
+};
 
 @Component({
   selector: 'la-result-card',
@@ -18,6 +25,18 @@ export class ResultCardComponent {
   readonly text = input.required<string>();
   readonly imageUrl = input<string | null>(null);
   readonly imageName = input<string>('');
+  readonly format = input<ExtractionFormat | null>(null);
+  readonly elapsedSeconds = input<number | null>(null);
+
+  readonly formatLabel = computed(() => {
+    const f = this.format();
+    return f ? FORMAT_LABELS[f] : null;
+  });
+
+  readonly elapsedLabel = computed(() => {
+    const s = this.elapsedSeconds();
+    return s != null ? `${s}s` : null;
+  });
 
   readonly back = output<void>();
 

@@ -12,6 +12,12 @@
             <span class="result__count">
               <mat-icon>check</mat-icon> {{ items().length }} itens
             </span>
+            @if (formatLabel()) {
+              <span class="result__sub-sep">·</span> {{ formatLabel() }}
+            }
+            @if (elapsedLabel()) {
+              <span class="result__sub-sep">·</span> {{ elapsedLabel() }}
+            }
           </p>
         </div>
       </div>
