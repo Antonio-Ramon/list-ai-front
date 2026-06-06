@@ -13,6 +13,11 @@
       </span>
     </div>
 
+    <!-- Botão de histórico só visível no mobile (top bar do design Aurora) -->
+    <button type="button" class="sidebar__history" aria-label="Histórico" disabled>
+      <mat-icon>history</mat-icon>
+    </button>
+
     <nav class="sidebar__nav" aria-label="Menu principal">
       <span class="sidebar__nav-label">Menu</span>
       <button type="button" class="nav-item nav-item--active" aria-current="page">
@@ -56,6 +61,18 @@
           <span class="topbar__pill">
             <span class="topbar__pill-dot"></span> IA pronta · ~6s
           </span>
+        </div>
+
+        <!-- Hero mobile (design Aurora) -->
+        <div class="hero">
+          <span class="hero__pill">
+            <span class="hero__pill-dot"></span> IA pronta · resposta em ~6s
+          </span>
+          <h1 class="hero__title">
+            Escaneie sua<br />
+            <span class="hero__title-accent">nota fiscal</span>
+          </h1>
+          <p class="hero__subtitle">Suba a foto. A IA devolve a lista pronta pra copiar.</p>
         </div>
       </header>
 

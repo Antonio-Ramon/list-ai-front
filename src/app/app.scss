@@ -126,6 +126,30 @@
   }
 }
 
+// Botão de histórico (ícone) — exclusivo do mobile
+.sidebar__history {
+  display: none; // visível só no mobile
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--la-color-surface);
+  border: 1px solid var(--la-color-border-subtle);
+  color: var(--la-color-text-med);
+  cursor: pointer;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
 .nav-item {
   display: flex;
   align-items: center;
@@ -261,6 +285,60 @@
   }
 }
 
+// ─── Hero (mobile — design Aurora) ──────────────────────────────────────────────
+.hero {
+  display: none; // visível só no mobile
+  flex-direction: column;
+  gap: 10px;
+
+  &__pill {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px 5px 8px;
+    border-radius: var(--la-radius-pill);
+    background: var(--la-color-surface);
+    border: 1px solid var(--la-color-border-subtle);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--la-color-text-med);
+    letter-spacing: 0.2px;
+  }
+
+  &__pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--la-color-accent);
+    box-shadow: 0 0 8px var(--la-color-accent-glow);
+  }
+
+  &__title {
+    margin: 4px 0 0;
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.8px;
+    color: var(--la-color-text-high);
+  }
+
+  &__title-accent {
+    color: var(--la-color-accent);
+    font-family: var(--la-font-serif);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  &__subtitle {
+    margin: 0;
+    max-width: 280px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--la-color-text-med);
+  }
+}
+
 // ─── Loading equalizer ──────────────────────────────────────────────────────────
 @keyframes eq-bar {
   0%, 100% { height: 6px; }
@@ -340,6 +418,12 @@
     display: none;
   }
 
+  // Botão de histórico encostado à direita (design Aurora)
+  .sidebar__history {
+    display: flex;
+    margin-left: auto;
+  }
+
   .workarea {
     overflow: visible;
   }
@@ -348,19 +432,22 @@
     padding: 18px;
   }
 
+  // Topbar de desktop dá lugar ao hero do design Aurora
   .topbar {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
-    padding: 18px 18px 16px;
+    padding: 24px 18px 4px;
+    border-bottom: none;
 
-    &__title {
-      font-size: 19px;
+    &__titles,
+    &__meta {
+      display: none;
     }
+  }
 
-    &__subtitle {
-      font-size: 12.5px;
-    }
+  .hero {
+    display: flex;
   }
 
   .loading-bop {
