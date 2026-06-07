@@ -8,16 +8,12 @@ import {
   ExtractionError,
   ExtractionFormat,
   ExtractionResult,
-  HistoryResult,
 } from '../types/extraction.types';
-import { PAGINATION } from '../constants/pagination.constants';
 import { mapApiError } from '../utils/error-mapper';
-import { HttpParamsService } from './http-params.service';
 
 @Injectable({ providedIn: 'root' })
 export class ExtractionService {
   private readonly http = inject(HttpClient);
-  private readonly paramsBuilder = inject(HttpParamsService);
 
   extract(file: File, format: ExtractionFormat = ExtractionFormat.Checklist): Observable<ExtractionResult | ExtractionError> {
     const form = new FormData();
@@ -29,21 +25,6 @@ export class ExtractionService {
       )
       .pipe(
         timeout(60_000),
-        catchError((err: HttpErrorResponse | TimeoutError) =>
-          of({ error: mapApiError(err) })
-        )
-      );
-  }
-
-  getHistory(
-    limit = PAGINATION.limit,
-    offset = PAGINATION.offset
-  ): Observable<HistoryResult | ExtractionError> {
-    const params = this.paramsBuilder.build({ limit, offset });
-    return this.http
-      .get<HistoryResult>(`${environment.apiUrl}/history`, { params })
-      .pipe(
-        timeout(30_000),
         catchError((err: HttpErrorResponse | TimeoutError) =>
           of({ error: mapApiError(err) })
         )

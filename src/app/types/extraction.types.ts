@@ -37,6 +37,7 @@ export interface HistoryItem {
 export interface HistoryEntry {
   id: string;
   created_at: string;
+  title: string | null;
   raw_text: string;
   total_items: number;
   format: ExtractionFormat;
