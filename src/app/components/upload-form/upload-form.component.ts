@@ -10,10 +10,10 @@ interface FormatOption {
 }
 
 const FORMAT_OPTIONS: FormatOption[] = [
-  { id: 'checklist', label: 'Checklist', hint: 'Caixas de marcar', icon: 'checklist' },
-  { id: 'asterisk', label: 'Asterisco', hint: '* item', icon: 'format_list_bulleted' },
-  { id: 'simple', label: 'Simples', hint: 'Texto puro', icon: 'list' },
-  { id: 'excel', label: 'Excel', hint: 'Colunas / CSV', icon: 'table_chart' },
+  { id: ExtractionFormat.Checklist, label: 'Checklist', hint: 'Caixas de marcar', icon: 'checklist' },
+  { id: ExtractionFormat.Asterisk, label: 'Asterisco', hint: '* item', icon: 'format_list_bulleted' },
+  { id: ExtractionFormat.Simple, label: 'Simples', hint: 'Texto puro', icon: 'list' },
+  { id: ExtractionFormat.Excel, label: 'Excel', hint: 'Colunas / CSV', icon: 'table_chart' },
 ];
 
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
@@ -35,7 +35,7 @@ export class UploadFormComponent {
   readonly submitted = output<ExtractionFormat>();
 
   readonly formats = FORMAT_OPTIONS;
-  readonly format = signal<ExtractionFormat>('checklist');
+  readonly format = signal<ExtractionFormat>(ExtractionFormat.Checklist);
   readonly fileSizeError = signal<string | null>(null);
   readonly isDragging = signal(false);
 

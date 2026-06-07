@@ -4,10 +4,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ExtractionFormat, ExtractionItem } from '../../types/extraction.types';
 
 const FORMAT_LABELS: Record<ExtractionFormat, string> = {
-  checklist: 'Checklist',
-  asterisk: 'Asterisco',
-  simple: 'Simples',
-  excel: 'Excel',
+  [ExtractionFormat.Checklist]: 'Checklist',
+  [ExtractionFormat.Asterisk]: 'Asterisco',
+  [ExtractionFormat.Simple]: 'Simples',
+  [ExtractionFormat.Excel]: 'Excel',
 };
 
 @Component({
