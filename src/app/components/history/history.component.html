@@ -1,0 +1,151 @@
+<section class="history">
+  <!-- ── Header (desktop) ── -->
+  <header class="history__head">
+    <div class="history__head-titles">
+      <h1 class="history__title">Histórico de notas</h1>
+      <p class="history__subtitle">
+        {{ total() }} notas escaneadas · {{ totalItems() }} itens extraídos no total
+      </p>
+    </div>
+    <button type="button" class="btn-new" (click)="newScan.emit()">
+      <mat-icon>add</mat-icon> Nova nota
+    </button>
+  </header>
+
+  <!-- ── Header (mobile) ── -->
+  <header class="history__hero">
+    <h1 class="history__hero-title">
+      Seu <span class="history__hero-accent">histórico</span>
+    </h1>
+    <div class="history__hero-pills">
+      <span class="hist-pill"><span class="hist-pill__dot"></span> {{ total() }} notas</span>
+      <span class="hist-pill">{{ totalItems() }} itens no total</span>
+    </div>
+  </header>
+
+  <!-- ── Toolbar ── -->
+  <div class="history__toolbar">
+    <label class="history__search">
+      <mat-icon>search</mat-icon>
+      <input
+        type="search"
+        placeholder="Buscar por item…"
+        [value]="search()"
+        (input)="onSearch($any($event.target).value)"
+      />
+    </label>
+    <div class="history__filters" role="group" aria-label="Filtrar por formato">
+      @for (f of filters; track f.id) {
+        <button
+          type="button"
+          class="filter-chip"
+          [class.filter-chip--active]="activeFilter() === f.id"
+          (click)="onFilter(f.id)"
+        >{{ f.label }}</button>
+      }
+    </div>
+  </div>
+
+  <!-- ── Content ── -->
+  <div class="history__content">
+    @if (loading()) {
+      <div class="history__state" role="status">
+        <mat-icon class="history__state-icon history__state-icon--spin">progress_activity</mat-icon>
+        <p>Carregando histórico…</p>
+      </div>
+    } @else if (error()) {
+      <div class="history__state" role="alert">
+        <mat-icon class="history__state-icon">error_outline</mat-icon>
+        <p>{{ error() }}</p>
+        <button type="button" class="btn-new" (click)="load()">
+          <mat-icon>refresh</mat-icon> Tentar de novo
+        </button>
+      </div>
+    } @else if (!visibleRows().length) {
+      <div class="history__state">
+        <mat-icon class="history__state-icon">history</mat-icon>
+        <p>Nenhuma nota encontrada.</p>
+      </div>
+    } @else {
+      <!-- Desktop table -->
+      <div class="history__table">
+        <div class="history__row history__row--head">
+          <span>Nota</span>
+          <span>Título da nota</span>
+          <span>Formato</span>
+          <span class="history__col--num">Itens</span>
+          <span>Data</span>
+          <span></span>
+        </div>
+        @for (row of visibleRows(); track row.entry.id) {
+          <div class="history__row" (click)="viewEntry.emit(row.entry)">
+            <span class="history__cell-thumb"><mat-icon>receipt_long</mat-icon></span>
+            <span class="history__cell-title">
+              <span class="history__cell-name">{{ row.title }}</span>
+              <span class="history__cell-preview">{{ row.preview }}</span>
+            </span>
+            <span>
+              <span class="format-pill">
+                <mat-icon>{{ row.formatIcon }}</mat-icon> {{ row.formatLabel }}
+              </span>
+            </span>
+            <span class="history__col--num history__cell-count">{{ row.entry.total_items }}</span>
+            <span class="history__cell-date">{{ row.dateLabel }}</span>
+            <button
+              type="button"
+              class="history__delete"
+              aria-label="Excluir nota"
+              (click)="openDelete(row, $event)"
+            ><mat-icon>delete</mat-icon></button>
+          </div>
+        }
+      </div>
+
+      <!-- Mobile grouped list -->
+      <div class="history__mobile">
+        @for (g of groups(); track g.group) {
+          <div class="history__group">
+            <span class="history__group-label">{{ g.group }}</span>
+            <div class="history__group-card">
+              @for (row of g.rows; track row.entry.id) {
+                <div class="history__item" (click)="viewEntry.emit(row.entry)">
+                  <span class="history__item-thumb"><mat-icon>receipt_long</mat-icon></span>
+                  <span class="history__item-meta">
+                    <span class="history__item-name">{{ row.title }}</span>
+                    <span class="history__item-preview">{{ row.preview }}</span>
+                    <span class="history__item-sub">
+                      <span class="history__item-fmt">
+                        <mat-icon>{{ row.formatIcon }}</mat-icon> {{ row.entry.total_items }} itens
+                      </span>
+                      <span aria-hidden="true">·</span>
+                      <span>{{ row.dateLabel }}</span>
+                    </span>
+                  </span>
+                  <button
+                    type="button"
+                    class="history__delete"
+                    aria-label="Excluir nota"
+                    (click)="openDelete(row, $event)"
+                  ><mat-icon>delete</mat-icon></button>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      @if (hasMore()) {
+        <div class="history__more">
+          <button type="button" class="btn-ghost-wide" [disabled]="loadingMore()" (click)="loadMore()">
+            {{ loadingMore() ? 'Carregando…' : 'Carregar mais' }}
+          </button>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Floating new-scan button (mobile) -->
+  <button type="button" class="btn-fab" (click)="newScan.emit()">
+    <mat-icon>add</mat-icon> Nova nota
+  </button>
+</section>

@@ -73,6 +73,40 @@ body {
   font-family: var(--la-font-sans);
 }
 
+// ─── Material dialog (Aurora) ─────────────────────────────────────────────────
+.la-dialog-backdrop {
+  background: rgba(6, 12, 9, 0.66);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.la-dialog-panel {
+  .mat-mdc-dialog-surface {
+    background: #101d17;
+    border: 1px solid var(--la-color-border-subtle);
+    border-radius: 22px;
+    padding: 26px;
+    box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.8);
+    color: var(--la-color-text-high);
+  }
+}
+
+// Bottom sheet no mobile — o diálogo encosta na base da tela.
+@media (max-width: 640px) {
+  .la-dialog-panel {
+    max-width: 100vw !important;
+    width: 100vw !important;
+    position: absolute !important;
+    bottom: 0;
+    left: 0;
+
+    .mat-mdc-dialog-surface {
+      border-radius: 26px 26px 0 0;
+      padding: 22px 18px calc(22px + env(safe-area-inset-bottom));
+    }
+  }
+}
+
 // ─── prefers-reduced-motion ───────────────────────────────────────────────────
 @media (prefers-reduced-motion: reduce) {
   * {

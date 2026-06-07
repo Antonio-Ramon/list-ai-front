@@ -1,0 +1,25 @@
+<div class="delete-dialog">
+  <div class="delete-dialog__copy">
+    <h2 class="delete-dialog__title">Excluir esta nota?</h2>
+    <p class="delete-dialog__text">
+      A lista extraída será removida do histórico. Esta ação não pode ser desfeita.
+    </p>
+  </div>
+
+  <div class="delete-dialog__preview">
+    <span class="delete-dialog__thumb"><mat-icon>receipt_long</mat-icon></span>
+    <span class="delete-dialog__meta">
+      <span class="delete-dialog__meta-name">{{ data.preview || 'Nota fiscal' }}</span>
+      <span class="delete-dialog__meta-sub">{{ data.totalItems }} itens · {{ data.dateLabel }}</span>
+    </span>
+  </div>
+
+  <div class="delete-dialog__actions">
+    <button type="button" class="delete-dialog__btn delete-dialog__btn--ghost" (click)="cancel()">
+      Cancelar
+    </button>
+    <button type="button" class="delete-dialog__btn delete-dialog__btn--danger" (click)="confirm()">
+      <mat-icon>delete</mat-icon> Excluir
+    </button>
+  </div>
+</div>
