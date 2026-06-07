@@ -14,16 +14,34 @@
     </div>
 
     <!-- Botão de histórico só visível no mobile (top bar do design Aurora) -->
-    <button type="button" class="sidebar__history" aria-label="Histórico" disabled>
+    <button
+      type="button"
+      class="sidebar__history"
+      aria-label="Histórico"
+      [class.sidebar__history--active]="view() === 'history'"
+      (click)="showHistory()"
+    >
       <mat-icon>history</mat-icon>
     </button>
 
     <nav class="sidebar__nav" aria-label="Menu principal">
       <span class="sidebar__nav-label">Menu</span>
-      <button type="button" class="nav-item nav-item--active" aria-current="page">
+      <button
+        type="button"
+        class="nav-item"
+        [class.nav-item--active]="view() === 'scan'"
+        [attr.aria-current]="view() === 'scan' ? 'page' : null"
+        (click)="showScan()"
+      >
         <mat-icon>document_scanner</mat-icon> Escanear
       </button>
-      <button type="button" class="nav-item" disabled>
+      <button
+        type="button"
+        class="nav-item"
+        [class.nav-item--active]="view() === 'history'"
+        [attr.aria-current]="view() === 'history' ? 'page' : null"
+        (click)="showHistory()"
+      >
         <mat-icon>history</mat-icon> Histórico
       </button>
     </nav>
@@ -40,7 +58,22 @@
   </aside>
 
   <main class="workarea">
-    @if (hasResult()) {
+    @if (view() === 'history') {
+      @if (historyDetail(); as entry) {
+        <la-result-card
+          [hasResult]="true"
+          [items]="detailItems()"
+          [text]="entry.raw_text"
+          [imageUrl]="null"
+          [imageName]="''"
+          [format]="entry.format"
+          [elapsedSeconds]="entry.elapsed_seconds"
+          (back)="closeHistoryDetail()"
+        />
+      } @else {
+        <la-history (newScan)="onNewScan()" (viewEntry)="openHistoryDetail($event)" />
+      }
+    } @else if (hasResult()) {
       <la-result-card
         [hasResult]="hasResult()"
         [items]="items()"

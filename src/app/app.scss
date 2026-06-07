@@ -146,6 +146,12 @@
     height: 16px;
   }
 
+  &--active {
+    background: var(--la-color-accent-dim);
+    border-color: var(--la-color-accent);
+    color: var(--la-color-accent);
+  }
+
   &:disabled {
     cursor: not-allowed;
   }

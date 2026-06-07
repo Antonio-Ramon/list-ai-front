@@ -1,13 +1,16 @@
 import { Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
-import { ExtractionError, ExtractionFormat, ExtractionItem } from './types/extraction.types';
+import { ExtractionError, ExtractionFormat, ExtractionItem, HistoryEntry } from './types/extraction.types';
 import { ExtractionService } from './services/extraction.service';
+import { HistoryStore } from './services/history-store.service';
 import { UploadFormComponent } from './components/upload-form/upload-form.component';
 import { ResultCardComponent } from './components/result-card/result-card.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
+import { HistoryComponent } from './components/history/history.component';
 
 export type AppState = 'idle' | 'file-selected' | 'loading' | 'success' | 'error';
+export type AppView = 'scan' | 'history';
 
 const LOADING_MESSAGES = [
   'Recebendo imagem da nota fiscal...',
@@ -28,16 +31,19 @@ const LOADING_MESSAGES = [
 @Component({
   selector: 'la-root',
   standalone: true,
-  imports: [MatIconModule, UploadFormComponent, ResultCardComponent, ErrorMessageComponent],
+  imports: [MatIconModule, UploadFormComponent, ResultCardComponent, ErrorMessageComponent, HistoryComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
   private readonly extractionService = inject(ExtractionService);
+  private readonly historyStore = inject(HistoryStore);
   private readonly destroyRef = inject(DestroyRef);
   private loadingTimer: ReturnType<typeof setInterval> | null = null;
 
   readonly state = signal<AppState>('idle');
+  readonly view = signal<AppView>('scan');
+  readonly historyDetail = signal<HistoryEntry | null>(null);
   readonly items = signal<ExtractionItem[]>([]);
   readonly resultText = signal<string>('');
   readonly errorMessage = signal<string | null>(null);
@@ -51,6 +57,18 @@ export class App {
   readonly isLoading = computed(() => this.state() === 'loading');
   readonly hasResult = computed(() => this.state() === 'success');
   readonly hasError = computed(() => this.state() === 'error');
+
+  // Mapeia a entrada de histórico selecionada para os inputs do result-card.
+  readonly detailItems = computed<ExtractionItem[]>(() =>
+    [...(this.historyDetail()?.extraction_items ?? [])]
+      .sort((a, b) => a.position - b.position)
+      .map((i) => ({
+        name: i.name,
+        quantity: i.quantity,
+        unit: i.unit,
+        price: i.price ?? undefined,
+      }))
+  );
 
   private readonly loadingMsgIndex = signal(0);
   readonly loadingMessage = computed(() => LOADING_MESSAGES[this.loadingMsgIndex()]);
@@ -109,6 +127,30 @@ export class App {
     this.reset();
   }
 
+  // ─── Navegação entre telas ───────────────────────────────────────────────────
+  showHistory(): void {
+    this.historyDetail.set(null);
+    this.view.set('history');
+  }
+
+  showScan(): void {
+    this.historyDetail.set(null);
+    this.view.set('scan');
+  }
+
+  onNewScan(): void {
+    this.reset();
+    this.showScan();
+  }
+
+  openHistoryDetail(entry: HistoryEntry): void {
+    this.historyDetail.set(entry);
+  }
+
+  closeHistoryDetail(): void {
+    this.historyDetail.set(null);
+  }
+
   onSubmit(format: ExtractionFormat): void {
     const file = this.selectedFile();
     if (!file) return;
@@ -127,6 +169,7 @@ export class App {
           this.elapsedSeconds.set(res.elapsed_seconds ?? null);
           this.usedFormat.set(format);
           this.errorMessage.set(null);
+          this.historyStore.refresh();
         }
       });
   }
