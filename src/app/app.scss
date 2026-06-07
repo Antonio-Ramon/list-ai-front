@@ -58,6 +58,7 @@
 .sidebar {
   position: relative;
   z-index: 2;
+  box-sizing: border-box;
   flex-shrink: 0;
   width: 232px;
   border-right: 1px solid var(--la-color-border-subtle);
