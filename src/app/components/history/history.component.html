@@ -3,9 +3,14 @@
   <header class="history__head">
     <div class="history__head-titles">
       <h1 class="history__title">Histórico de notas</h1>
-      <p class="history__subtitle">
-        {{ total() }} notas escaneadas · {{ totalItems() }} itens extraídos no total
-      </p>
+      <!-- Sem dados carregados os contadores mentiriam "0 notas". -->
+      @if (error()) {
+        <p class="history__subtitle">Não foi possível carregar seus dados.</p>
+      } @else {
+        <p class="history__subtitle">
+          {{ total() }} notas escaneadas · {{ totalItems() }} itens extraídos no total
+        </p>
+      }
     </div>
     <button type="button" class="btn-new" (click)="newScan.emit()">
       <mat-icon>add</mat-icon> Nova nota
@@ -17,10 +22,12 @@
     <h1 class="history__hero-title">
       Seu <span class="history__hero-accent">histórico</span>
     </h1>
-    <div class="history__hero-pills">
-      <span class="hist-pill"><span class="hist-pill__dot"></span> {{ total() }} notas</span>
-      <span class="hist-pill">{{ totalItems() }} itens no total</span>
-    </div>
+    @if (!error()) {
+      <div class="history__hero-pills">
+        <span class="hist-pill"><span class="hist-pill__dot"></span> {{ total() }} notas</span>
+        <span class="hist-pill">{{ totalItems() }} itens no total</span>
+      </div>
+    }
   </header>
 
   <!-- ── Toolbar ── -->

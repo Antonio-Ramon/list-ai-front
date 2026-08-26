@@ -78,9 +78,7 @@ export class HistoryComponent {
   readonly total = this.store.total;
   readonly loading = this.store.loading;
   readonly loadingMore = this.store.loadingMore;
-  readonly error = computed(() =>
-    this.store.hasError() ? 'Não foi possível carregar o histórico.' : null
-  );
+  readonly error = this.store.errorMessage;
 
   readonly search = signal<string>('');
   readonly activeFilter = signal<ExtractionFormat | 'all'>('all');
@@ -155,7 +153,7 @@ export class HistoryComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
         if ('error' in res) {
-          this.snackBar.open('Não foi possível excluir a nota. Tente novamente.', 'OK', { duration: 4_000 });
+          this.snackBar.open(res.error, 'OK', { duration: 4_000 });
           return;
         }
         this.store.markDeleted(row.entry.id);
