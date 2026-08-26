@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, of, TimeoutError } from 'rxjs';
+import { Observable, of, TimeoutError, tap } from 'rxjs';
 import { catchError, timeout } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import {
@@ -9,11 +9,13 @@ import {
   ExtractionFormat,
   ExtractionResult,
 } from '../types/extraction.types';
-import { mapApiError } from '../utils/error-mapper';
+import { isConnectionError, mapApiError } from '../utils/error-mapper';
+import { ApiStatusService } from './api-status.service';
 
 @Injectable({ providedIn: 'root' })
 export class ExtractionService {
   private readonly http = inject(HttpClient);
+  private readonly apiStatus = inject(ApiStatusService);
 
   extract(file: File, format: ExtractionFormat = ExtractionFormat.Checklist): Observable<ExtractionResult | ExtractionError> {
     const form = new FormData();
@@ -25,9 +27,8 @@ export class ExtractionService {
       )
       .pipe(
         timeout(60_000),
-        catchError((err: HttpErrorResponse | TimeoutError) =>
-          of({ error: mapApiError(err) })
-        )
+        tap(() => this.apiStatus.reportOnline()),
+        catchError((err: HttpErrorResponse | TimeoutError) => this.toError(err))
       );
   }
 
@@ -36,9 +37,14 @@ export class ExtractionService {
       .delete<DeleteResult>(`${environment.apiUrl}/history/${id}`)
       .pipe(
         timeout(30_000),
-        catchError((err: HttpErrorResponse | TimeoutError) =>
-          of({ error: mapApiError(err) })
-        )
+        tap(() => this.apiStatus.reportOnline()),
+        catchError((err: HttpErrorResponse | TimeoutError) => this.toError(err))
       );
+  }
+
+  /** Converte a falha em `ExtractionError` e atualiza o status da API. */
+  private toError(err: HttpErrorResponse | TimeoutError): Observable<ExtractionError> {
+    this.apiStatus.report(isConnectionError(err));
+    return of({ error: mapApiError(err) });
   }
 }

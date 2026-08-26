@@ -5,6 +5,7 @@ import {
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import { firstValueFrom } from 'rxjs';
+import { ApiStatusService } from './api-status.service';
 import { ExtractionService } from './extraction.service';
 import { ExtractionResult } from '../types/extraction.types';
 import { environment } from '../../environments/environment';
@@ -74,7 +75,7 @@ describe('ExtractionService', () => {
     );
   });
 
-  it('emite ExtractionError com mensagem genérica para erro sem código', async () => {
+  it('avisa que o serviço está fora do ar em erro 5xx', async () => {
     const file = new File(['data'], 'nota.jpg', { type: 'image/jpeg' });
 
     const promise = firstValueFrom(service.extract(file));
@@ -84,7 +85,34 @@ describe('ExtractionService', () => {
     const res = await promise;
 
     expect((res as { error: string }).error).toBe(
+      'O serviço está fora do ar no momento. Tente novamente em instantes.'
+    );
+  });
+
+  it('emite ExtractionError com mensagem genérica para erro sem código', async () => {
+    const file = new File(['data'], 'nota.jpg', { type: 'image/jpeg' });
+
+    const promise = firstValueFrom(service.extract(file));
+    httpMock
+      .expectOne(API_URL)
+      .flush({ message: 'algo estranho' }, { status: 422, statusText: 'Unprocessable Entity' });
+    const res = await promise;
+
+    expect((res as { error: string }).error).toBe(
       'Algo deu errado. Tente novamente.'
     );
+  });
+
+  it('marca a API como desconectada quando a rede falha', async () => {
+    const file = new File(['data'], 'nota.jpg', { type: 'image/jpeg' });
+
+    const promise = firstValueFrom(service.extract(file));
+    httpMock.expectOne(API_URL).error(new ProgressEvent('error'), { status: 0, statusText: '' });
+    const res = await promise;
+
+    expect((res as { error: string }).error).toBe(
+      'Não conseguimos falar com o servidor. Verifique sua conexão e tente de novo.'
+    );
+    expect(TestBed.inject(ApiStatusService).isOffline()).toBe(true);
   });
 });
