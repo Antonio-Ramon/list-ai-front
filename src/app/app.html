@@ -47,12 +47,22 @@
     </nav>
 
     <div class="sidebar__footer">
-      <div class="status-card">
+      <div
+        class="status-card"
+        role="status"
+        [class.status-card--offline]="apiState() === 'offline'"
+        [class.status-card--checking]="apiState() === 'checking'"
+      >
         <div class="status-card__head">
           <span class="status-card__dot"></span>
-          <span>API conectada</span>
+          <span>{{ apiLabel() }}</span>
         </div>
-        <p class="status-card__hint">Fotos nítidas e bem iluminadas extraem melhor.</p>
+        <p class="status-card__hint">{{ apiHint() }}</p>
+        @if (apiOffline()) {
+          <button type="button" class="status-card__retry" (click)="retryConnection()">
+            <mat-icon>refresh</mat-icon> Tentar reconectar
+          </button>
+        }
       </div>
     </div>
   </aside>

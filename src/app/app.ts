@@ -2,6 +2,7 @@ import { Component, computed, DestroyRef, effect, inject, signal } from '@angula
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { ExtractionError, ExtractionFormat, ExtractionItem, HistoryEntry } from './types/extraction.types';
+import { ApiStatusService } from './services/api-status.service';
 import { ExtractionService } from './services/extraction.service';
 import { HistoryStore } from './services/history-store.service';
 import { UploadFormComponent } from './components/upload-form/upload-form.component';
@@ -38,6 +39,7 @@ const LOADING_MESSAGES = [
 export class App {
   private readonly extractionService = inject(ExtractionService);
   private readonly historyStore = inject(HistoryStore);
+  private readonly apiStatus = inject(ApiStatusService);
   private readonly destroyRef = inject(DestroyRef);
   private loadingTimer: ReturnType<typeof setInterval> | null = null;
 
@@ -53,6 +55,12 @@ export class App {
   readonly usedFormat = signal<ExtractionFormat | null>(null);
 
   readonly fileName = computed(() => this.selectedFile()?.name ?? '');
+
+  // ─── Status da API (real, derivado das requisições) ──────────────────────────
+  readonly apiState = this.apiStatus.status;
+  readonly apiLabel = this.apiStatus.label;
+  readonly apiHint = this.apiStatus.hint;
+  readonly apiOffline = this.apiStatus.isOffline;
 
   readonly isLoading = computed(() => this.state() === 'loading');
   readonly hasResult = computed(() => this.state() === 'success');
@@ -149,6 +157,11 @@ export class App {
 
   closeHistoryDetail(): void {
     this.historyDetail.set(null);
+  }
+
+  /** Refaz a busca do histórico — é o ping que revalida a conexão com a API. */
+  retryConnection(): void {
+    this.historyStore.refresh();
   }
 
   onSubmit(format: ExtractionFormat): void {

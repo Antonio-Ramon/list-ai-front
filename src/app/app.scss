@@ -226,6 +226,58 @@
     line-height: 1.5;
     color: var(--la-color-text-low);
   }
+
+  &__retry {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 7px 10px;
+    border-radius: 9px;
+    background: transparent;
+    border: 1px solid var(--la-color-error);
+    color: var(--la-color-error);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s;
+
+    mat-icon {
+      font-size: 13px;
+      width: 13px;
+      height: 13px;
+    }
+
+    &:hover {
+      background: rgba(243, 140, 122, 0.12);
+    }
+  }
+
+  // API fora do ar: vermelho, sem o brilho de "tudo certo".
+  &--offline {
+    border-color: rgba(243, 140, 122, 0.4);
+    background: rgba(243, 140, 122, 0.08);
+
+    .status-card__dot {
+      background: var(--la-color-error);
+      box-shadow: 0 0 8px rgba(243, 140, 122, 0.6);
+    }
+  }
+
+  // Ainda verificando: cinza e pulsando.
+  &--checking {
+    .status-card__dot {
+      background: var(--la-color-text-low);
+      box-shadow: none;
+      animation: status-pulse 1.2s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes status-pulse {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 1; }
 }
 
 // ─── Work area ──────────────────────────────────────────────────────────────────
